@@ -1,6 +1,7 @@
 from random import choice
 from ability import Ability
 from armor import Armor
+from weapon import Weapon
 
 
 class Hero:
@@ -10,6 +11,8 @@ class Hero:
         self.armors = list()
         self.starting_health = starting_health
         self.current_health = starting_health
+        self.deaths = 0
+        self.kills = 0
 
     # This takes in two heros and makes them fight until one dies. If neither can kill each other, it makes it a draw
     def fight(self, opponent):
@@ -24,12 +27,24 @@ class Hero:
                 opponent.take_damage(true_damage_against_self)
 
             if self.is_alive():
+                self.add_kill(1)
+                opponent.add_death(1)
                 print(f'{opponent.name} has won the battle!')
             elif opponent.is_alive():
+                opponent.add_kill(1)
+                self.add_death(1)
                 print(f'{self.name} has won the battle!')
 
-    # This takes the ability from the object and turns it into raw damage
+    def add_weapon(self, weapon):
+        self.abilities.append(weapon)
 
+    def add_kill(self, num_kills):
+        self.kills += num_kills
+
+    def add_death(self, num_deaths):
+        self.deaths += num.deaths
+
+    # This takes the ability from the object and turns it into raw damage
     def attack(self):
         total_damage = 0
         for ability in self.abilities:
@@ -126,18 +141,26 @@ class Hero:
 #     hero.take_damage(15000)
 #     print(hero.is_alive())
 
+# if __name__ == "__main__":
+#     # If you run this file from the terminal
+#     # this block is executed.
+
+#     hero1 = Hero("Wonder Woman")
+#     hero2 = Hero("Dumbledore")
+#     ability1 = Ability("Super Speed", 300)
+#     ability2 = Ability("Super Eyes", 130)
+#     ability3 = Ability("Wizard Wand", 80)
+#     ability4 = Ability("Wizard Beard", 20)
+#     hero1.add_ability(ability1)
+#     hero1.add_ability(ability2)
+#     hero2.add_ability(ability3)
+#     hero2.add_ability(ability4)
+#     hero1.fight(hero2)
+
 if __name__ == "__main__":
     # If you run this file from the terminal
     # this block is executed.
-
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
+    hero = Hero("Wonder Woman")
+    weapon = Weapon("Lasso of Truth", 90)
+    hero.add_weapon(weapon)
+    print(hero.attack())
